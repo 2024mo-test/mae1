@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <title>국가유산관련법령 모의고사</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@400;500;700&display=swap"
+        rel="stylesheet">
+
+    <!-- 부트스트랩 CSS 추가 -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- 부트스트랩 JS 및 제이쿼리 추가 -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        /* 1️⃣ 전체 기본값: 시험지 본문 */
+        body {
+            font-family: 'Noto Serif KR', serif;
+            color: #000;
+            font-size: 20px;
+            line-height: 1.7;
+        }
+
+        body {
+            background-color: #e0e0e0;
+            /* 전체 배경 명암 처리 */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            margin: 0;
+            padding-top: 20px;
+        }
+
+        /* 전체 컨테이너 */
+        .container {
+            width: 25cm;
+            /* 전체 시험지 크기 */
+            background-color: white;
+            /* 시험지 영역을 화이트로 */
+            margin: 0 auto;
+            /* 중앙 정렬 */
+            padding: 50px;
+            box-sizing: border-box;
+            margin-bottom: 30px;
+        }
+
+        /* 페이지 하단의 이전/다음 버튼 */
+        .footer {
+            position: absolute;
+            bottom: -60px;
+            /* 문제지 박스 외곽 경계선 아래에 위치 */
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 10px;
+            /* 버튼과 좌우 화면 끝 사이 간격 */
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            width: auto;
+            /* 버튼의 너비가 경계선을 넘지 않게 자동으로 조정 */
+        }
+
+        /* 헤드 영역 */
+        .header {
+            width: 100%;
+            max-width: 24cm;
+            /* 18cm로 고정된 시험지 폭 */
+            height: 50px;
+            border: 2px solid black;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 8px;
+            /* 상단 패딩 */
+
+            box-sizing: border-box;
+            background-color: rgba(220, 220, 220, 0.5);
+            /* 약한 회색 배경 */
+            line-height: 50px;
+        }
+
+        .left-header {
+            padding-left: 20px;
+            /* 좌측 텍스트를 안으로 넣음 */
+        }
+
+        .right-header {
+            padding-right: 40px;
+            /* 우측 텍스트를 안으로 넣음 */
+        }
+
+        /* 문제 영역의 좌우 배치 대신 위아래 배치 */
+        .problem-area {
+            width: 22cm;
+            border: none;
+            /* 외곽 경계선 제거 */
+            padding: 40px;
+            box-sizing: border-box;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            /* 세로 방향으로 배치 */
+            position: relative;
+            font-size: 17px !important;
+        }
+
+        /* 문제 영역에 임시 배경 컬러 추가 */
+        .question {
+            margin-bottom: 23px !important;
+            /* 질문지와 질문지 사이 간격 줄이기 */
+            padding: 5px;
+            background-color: transparent;
+            /* 문제 내부는 흰색으로 강조 */
+
+            box-sizing: border-box;
+        }
+
+        /* 질문 텍스트 줄바꿈 설정 */
+        .question p {
+            margin: 8px;
+            /* 질문지와 답지 사이 간격 줄이기 */
+            text-indent: -1em;
+            /* 질문 번호 바로 아래에서 시작되지 않도록 */
+            padding-left: 0.5em;
+            /* 첫 줄 이후 줄 시작을 동일하게 맞춤 */
+        }
+
+        .choices {
+            margin-top: 0px !important;
+            /* 질문지와 답지 사이 간격을 줄이기 */
+        }
+
+        /* 선택지 텍스트 줄바꿈 설정 */
+        .choices .choice {
+            text-indent: -1.5em;
+            /* 선택지 번호 바로 아래에서 줄이 시작되지 않도록 */
+            padding-left: 2em;
+            /* 첫 줄 이후 줄 시작을 동일하게 맞춤 */
+            margin-bottom: 5px;
+        }
+
+        /* 선택지 버튼 활성화 */
+        .choice-button {
+            width: 30px;
+            /* 선택지 버튼의 넓이 */
+            height: 30px;
+            /* 선택지 버튼의 높이 */
+            line-height: 30px;
+            /* 텍스트를 중앙에 배치 */
+            text-align: center;
+            /* 텍스트 중앙 정렬 */
+            border-radius: 50%;
+            /* 둥근 버튼 */
+            padding: 0;
+            /* 추가 여백 없음 */
+            margin-right: 5px;
+            /* 선택지 텍스트와의 간격 */
+            cursor: pointer;
+            box-sizing: border-box;
+            /* 테두리와 내부 여백을 포함한 크기 정의 */
+            position: relative;
+            /* ✔ 표시 위치 기준 */
+        }
+
+        .choice-button.selected::after {
+            content: '✔';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -45%);
+            /* 중심에서 약간 위 */
+            font-size: 19px;
+            font-weight: bold;
+
+            pointer-events: none;
+        }
+
+        .choice-button.selected.correct::after {
+            color: black;
+        }
+
+        /* 오답인 경우 (빨강) */
+        .choice-button.selected.incorrect::after {
+            color: red;
+        }
+
+        /* 버튼에 마우스를 올렸을 때 투명한 원형 실선 유지 */
+        .choice-button:hover {
+            border-color: transparent;
+            /* 여전히 투명 */
+        }
+
+        .choices-horizontal {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            /* 줄바꿈 허용 (선택사항); 2유형 */
+            gap: 10px;
+        }
+
+        .choices-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px 20px;
+            /* 세로(위 아래 간격) 10px, 가로(좌우 간격) 30px 간격 ; 3유형 */
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 13cm;
+            /* 가로 13cm */
+            height: 7cm;
+            /* 세로 7cm */
+            border-radius: 10px;
+            /* 각 모서리 레디우스 10px */
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            /* 상단 약한 명암 처리 */
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            /* 좌우 정렬 */
+            align-items: center;
+            /* 내용 수직 중앙 정렬 */
+            font-size: 20px;
+            /* 상단 폰트 크기 */
+            font-weight: bold;
+            padding-bottom: 10px;
+            border-bottom: 1px solid lightgray;
+            /* 상단 구분선 */
+            height: 40px;
+            /* 상단의 높이 고정 */
+        }
+
+        .modal-footer {
+            display: flex;
+            justify-content: flex-end;
+            /* 확인 버튼 우측 정렬 */
+            border-top: none;
+            /* 보이지 않게 투명 처리 */
+        }
+
+        .modal-body {
+            padding: 6px;
+            font-size: 16px;
+            /* 텍스트 폰트 크기 */
+            line-height: 1.5;
+            /* 줄 간격 설정 */
+        }
+
+        button.confirm-button {
+            width: 50px;
+            /* 버튼의 너비 */
+            height: 30px;
+            /* 버튼의 높이 */
+            padding: 3px 3px;
+            /* 내부 여백 조정 */
+            margin: 0;
+            /* 외부 여백 제거 */
+            line-height: normal;
+            /* 텍스트가 중앙에 위치하도록 */
+            border-radius: 10px;
+            /* 모서리 둥글게 */
+            background-color: rgb(161, 160, 160);
+            /* 버튼 배경색 (녹색) */
+            color: white;
+            /* 버튼 글씨색 */
+            font-size: 16px;
+            /* 폰트 크기 */
+            border: none;
+            /* 테두리 제거 */
+            cursor: pointer;
+            /* 커서 모양 변경 */
+        }
+
+        button.confirm-button:hover {
+            background-color: #45a049;
+            /* 마우스 오버 시 버튼 색상 */
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 2️⃣ 문제 본문 */
+        .question p {
+            font-family: 'Noto Serif KR', serif;
+            margin-bottom: 14px;
+        }
+
+        /* 3️⃣ 보기 문장 */
+        .choice {
+            font-family: 'Noto Serif KR', serif;
+            line-height: 1.8;
+        }
+
+        /* 4️⃣ 법조문 */
+        .modal-body p {
+            font-family: 'Noto Serif KR', serif;
+            font-size: 15px;
+            line-height: 1.75;
+        }
+
+        /* 5️⃣ 버튼·UI는 고딕 */
+        button,
+        .choice-button,
+        .modal-header,
+        .confirm-button,        
+        .navbar {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        /* 6️⃣ 문제 번호 강조 */
+        .question>p {
+            font-weight: 600;
+        }
+
+        /* 7️⃣ 보기 번호(①②③④) */
+        .choice-button {
+            font-weight: 600;
+            margin-right: 6px;
+
+        }
+
+        /* 8️⃣ 문제 본문 크기 (실제 시험지 기준) */
+        .question p {
+            font-size: 15.7px;
+            line-height: 1.7;
+        }
+
+        /* 9️⃣ 선택지 문장 */
+        .choice {
+            font-size: 15.7px;
+            line-height: 1.75;
+        }
+
+        /* 🔟 법조문 */
+        .modal-body p {
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        /* 선택지 번호 원 안 숫자 강조 완전 제거 */
+        .choice-button {
+            font-weight: 500;
+            /* 기본 두께 */
+            font-size: 15.7px;
+            /* 선택지 텍스트와 동일 */
+            font-family: 'Noto Serif KR', serif;
+
+            /* 클릭은 되되, 시험지처럼 보이게 */
+            cursor: pointer;
+        }
+    </style>
+    <style>
+        #startBtn {
+            width: 68px;
+            height: 32px;
+
+            /* 글자 중앙 정렬 (핵심) */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            padding: 0;
+            /* 🔥 핵심 1 */
+            white-space: nowrap;
+            /* 🔥 핵심 2 */
+
+            font-size: 15px;
+            font-weight: 500;
+
+            /* 완만한 테두리 */
+            border-radius: 8px;
+            border: 1px solid #bbb;
+
+            background-color: #f2f2f2;
+            cursor: pointer;
+
+            transition: background-color 0.2s ease, border-color 0.2s ease;
+        }
+
+        /* 마우스 오버 */
+        #startBtn:hover {
+            background-color: #dcdcdc;
+            border-color: #999;
+        }
+
+        /* 클릭 불가 상태 */
+        #startBtn:disabled {
+            background-color: #eee;
+            color: #aaa;
+            cursor: default;
+        }
+    </style>
+
+    <script>
+        function handleChoiceClick(element, isCorrect, modalId) {
+            const questionBox = element.closest('.question'); // 해당 문제 영역
+            const buttons = questionBox.querySelectorAll('.choice-button');
+
+            // 기존 선택 해제 및 클래스 제거
+            buttons.forEach(btn => {
+                btn.classList.remove('selected', 'correct', 'incorrect');
+            });
+
+            // 새 선택 적용
+            element.classList.add('selected');
+            if (isCorrect) {
+                element.classList.add('correct');
+            } else {
+                element.classList.add('incorrect');
+            }
+
+            // 정오답 처리
+            const answerText = document.getElementById(modalId).querySelector('#answerText');
+            answerText.textContent = isCorrect ? '정답입니다!' : '오답입니다.';
+            document.getElementById(modalId).style.display = "block";
+        }
+    </script>
+    <script>
+        function openAnswerModal(isCorrect, modalId) {
+            // 정답 여부 설정
+            const answerText = document.getElementById(modalId).querySelector('#answerText');
+            answerText.textContent = isCorrect ? '정답입니다!' : '오답입니다.';
+
+            // 모달창 열기
+            document.getElementById(modalId).style.display = "block";
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = "none";
+        }
+
+    </script>
+    <style>
+        body {
+            user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
+    <script>
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault();
+        });
+        document.addEventListener('selectstart', function (e) {
+            e.preventDefault();
+        });
+    </script>
+
+</head>
+
+<body>
+
+    <!-- 전체 컨테이너 -->
+    <div class="container">
+        <!-- 헤드 영역 -->
+        <div class="header">
+            <div class="left-header">
+                <h1 style="font-size: 24px; font-weight: 550; line-height: normal;">매장유산법 예비모의고사</h1>
+                <!-- 수동 입력 -->
+            </div>
+            <div class="right-header">
+                <h3 style="font-size: 20px; line-height: normal;"> (2026. 11) </h3> <!-- 수동 입력 -->
+            </div>
+        </div>
+        <!-- 문제 영역 -->
+        <div class="problem-area">
+            <!-- 좌측 문제 칸 -->
+            <div class="left-column">                
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>1. 매장유산 보호 및 조사에 관한 법령상 매장유산에 관한 설명으로 옳은 것은? (기출) </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal1')">①</span>
+                            건조물 등에 포장(包藏)되어 있는 유형의 문화유산은 매장유산이다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal1')">②</span>
+                            토지에 매장되어 있는 유형의 문화유산은 매장유산이다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button" onclick="handleChoiceClick(this, false, 'answerModal1')">③</span>
+                            지표에 퇴적되어 있는 화석은 매장유산이 아니다.  
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal1')">④</span> 
+                            공해에 존재하는 모든 유형문화유산은 매장유산이다.    
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal1" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal1')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 제2조 제1호 <br> (정의) 이 법에서 “매장유산”이란 다음 각 호의 것을 말한다.
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>2. 매장유산 보호 및 조사에 관한 법령상 매장유산에 해당하지 않는 것은? 
+                    </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal2')">①</span>
+                            토지 또는 수중에 매장되거나 분포되어 있는 문화유산
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button" onclick="handleChoiceClick(this, true, 'answerModal2')">②</span>
+                            건조물에 포장(包藏)되어 있는 문화유산
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal2')">③</span>
+                            지표ㆍ지중ㆍ수중(바다ㆍ호수ㆍ하천을 포함한다) 등에 생성ㆍ퇴적되어 있는 천연동굴ㆍ화석
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal2')">④</span>
+                            공해에 존재하는 대한민국 기원 문화유산
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal2" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal2')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 제2조 제2호 <br> 2. 건조물 등의 부지에 매장되어 있는 문화유산
+                            </p>
+                            <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>                
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>3. 매장유산 보호 및 조사에 관한 법령상 지질학적인 가치가 큰 매장유산 중 침식 및 퇴적 작용에 의하여 형성된 지형에 해당하지 않는 것은?
+                    </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal3')">①</span>
+                            타포니(tafoni)
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button" onclick="handleChoiceClick(this, false, 'answerModal3')">②</span>
+                            사구(砂丘: 모래언덕)
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal3')">③</span>
+                            갯벌
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal3')">④</span>
+                            돌개구멍(pot hole)
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal3" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal3')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제2조  <br> (매장유산의 정의) 「매장유산 보호 및 조사에 관한 법률」 제2조제3호에서 “대통령령으로 정하는 지질학적인 가치가 큰 것”이란 별표 1과 같다.<br>
+                            (풍화작용과 관련된 지형; 토르, 타포니, 암괴류 등)
+                            </p>
+                            <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>4. 매장유산 보호 및 조사에 관한 법령상 지질학적으로 가치가 큰 매장유산 중에서 “학술적 가치가 큰 자연지형”에 해당하지 않는 것은?  </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button" onclick="handleChoiceClick(this, false, 'answerModal4')">①</span>
+                            화산활동에 의하여 형성된 분화구(噴火口)  
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal4')">②</span>
+                            풍화작용과 관련된 토르(tor)
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal4')">③</span>
+                            퇴적구조와 관련된 관입(貫入) 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal4')">④</span>
+                            구조운동에 의하여 형성된 고위평탄면(高位平坦面)
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal4" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal4')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제2조 <br> (매장유산의 정의) 「매장유산 보호 및 조사에 관한 법률」 제2조제3호에서 “대통령령으로 정하는 지질학적인 가치가 큰 것”이란 별표 1과 같다.
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- ✅ 2유형: 빈칸 또는 괄호 채워넣기형 문제 템플릿 -->
+                <div class="question">
+                    <p>5. 매장유산 보호 및 조사에 관한 법령상 지질학적으로 가치가 큰 매장유산 중에서 “학술적 가치가 높은 지표ㆍ지질 현상”에 해당하는 것은? 
+                    </p>
+                    <!-- 보기 박스 -->
+                    <div class="example-box"
+                        style="margin-top: 10px; margin-bottom: 30px; padding: 10px; padding-left: 30px; background-color: #f4f4f4; border-radius: 5px; text-align: justify;">
+                        <p>ㄱ. 얼음골, 풍혈</p>
+                        <p>ㄴ. 샘: 온천, 냉천, 광천</p>
+                        <p>ㄷ. 특이한 해양 현상 </p>
+                        <p>ㄹ. 그 밖에 각 지질시대를 대표하는 전형적인 노두(露頭: 지표에 드러난 부분)와 그 분포지 </p>                        
+                    </div>
+                    <div class="choices choices-horizontal" style="margin-top: 50px;">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal5')">①</span>
+                            ㄱ, ㄴ
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal5')">②</span>
+                            ㄱ, ㄷ 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button" onclick="handleChoiceClick(this, true, 'answerModal5')">③</span>
+                            ㄱ, ㄴ, ㄷ
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal5')">④</span>
+                            ㄱ, ㄴ, ㄷ, ㄹ
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal5" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal5')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제2조  <br> (매장유산의 정의) 「매장유산 보호 및 조사에 관한 법률」(이하 “법”이라 한다) 제2조제3호에서 “대통령령으로 정하는 지질학적인 가치가 큰 것”이란 별표 1과 같다.
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>              
+                <div class="question">
+                    <p>6. 매장유산 보호 및 조사에 관한 법령상 매장유산의 정의에 해당하지 않는 것은?  </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal6')">①</span>
+                            공해에 매장되거나 분포되어 있는 문화유산 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal6')">②</span>
+                            하천에 생성되어 있는 천연동굴
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal6')">③</span>
+                            「내수면어업법」에 따른 내수면에 분포되어 있는 문화유산
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button" onclick="handleChoiceClick(this, false, 'answerModal6')">④</span>
+                            건조물 등의 부지에 매장되어 있는 문화유산
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal6" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal6')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 제3조 제2호 <br> 2. 공해에 존재하는 대한민국 기원 문화유산
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- ✅ 1유형: 빈칸 또는 괄호 채워넣기형 문제 템플릿 -->
+                <div class="question">
+                    <p>7. 매장유산 보호 및 조사에 관한 법령상 매장유산 유존지역의 보호에 관한 규정이다. 빈칸에 알맞은 것은? </p>
+                    <!-- 보기 박스 -->
+                    <div class="example-box"
+                        style="margin-top: 10px; margin-bottom: 30px; padding: 10px; padding-left: 30px; background-color: #f4f4f4; border-radius: 5px; text-align: justify;">
+                        <p>o. 대통령령으로 정하는 바에 따라 매장유산이 존재하는 것으로 인정되는 지역은 <span>( ㄱ )</span>이 훼손되지 아니하도록 보호되어야 하며, 누구든지 이 법에서 정하는 바에 따르지 아니하고는 <span>( ㄴ )</span>을 조사ㆍ발굴하여서는 아니 된다. </p>
+                    </div>
+                    <div class="choices" style="margin-top: 50px;">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal7')">①</span>
+                            ㄱ: 원형      ㄴ: 매장유산  
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal7')">②</span>
+                            ㄱ: 매장유산  ㄴ: 매장유산 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal7')">③</span>
+                            ㄱ: 원형      ㄴ: 매장유산 유존지역  
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal7')">④</span>
+                            ㄱ: 매장유산  ㄴ: 매장유산 유존지역 
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal7" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal7')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 제4조 <br> (매장유산 유존지역의 보호) 대통령령으로 정하는 바에 따라 매장유산이 존재하는 것으로 인정되는 지역(이하 “매장유산 유존지역”이라 한다)은 원형이 훼손되지 아니하도록 보호되어야 하며, 누구든지 이 법에서 정하는 바에 따르지 아니하고는 매장유산 유존지역을 조사ㆍ발굴하여서는 아니 된다. 
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>8. 매장유산 보호 및 조사에 관한 법령상 매장유산 유존지역의 보호에 관한 설명으로 옳지 않는 것은?  </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal8')">①</span>
+                            매장유산 유존지역이란 매장유산이 존재하는 것으로 인정되는 지역을 말한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal8')">②</span>
+                            매장유산 유존지역은 원형이 훼손되지 아니하도록 보호되어야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button" onclick="handleChoiceClick(this, false, 'answerModal8')">③</span>
+                            누구든지 이 법에 반하여 「고도 보존 및 육성에 관한 특별법」에 따른 고도(古都)지역을 조사ㆍ발굴하여서는 아니 된다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal8')">④</span> 
+                            매장유산이 발견 신고된 지역은 매장유산 유존지역으로 보호된다.  
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal8" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal8')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제3조 제1항 제4호 <br> 4. 법 제17조에 따른 발견신고 및 확인절차를 거쳐서 매장유산이 존재하는 것으로 인정된 지역
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>9. 매장유산 보호 및 조사에 관한 법령상 매장유산 유존지역에 관한 설명으로 옳지 않은 것은?  </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal9')">①</span>
+                            매장유산 유존지역은 원형이 훼손되지 아니하도록 보호되어야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal9')">②</span>
+                            국가지정문화유산의 보호구역에서 국가유산청장이 매장유산에 대하여 조사한 결과 매장유산이 존재하는 것으로 인정된 지역은 매장유산 유존지역이다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button" onclick="handleChoiceClick(this, false, 'answerModal9')">③</span>
+                            수중유산 분포지역은 매장유산 유존지역에 해당한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal9')">④</span> 
+                            매장유산 유존지역의 위치에 관한 정보의 구체적 표시방법 및 추가 정보의 공개 등에 필요한 사항은 국가유산청장이 정하여 고시한다.    
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal9" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal9')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제3조 제4항  <br> ④ 매장유산 유존지역의 위치에 관한 정보의 구체적 표시방법 및 추가 정보의 공개 등에 필요한 사항은 문화체육관광부령으로 정한다.
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>               
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>10. 매장유산 보호 및 조사에 관한 법령상 매장유산 유존지역에 관한 내용이다. 옳지 않는 것은? 
+                    </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal10')">①</span>
+                            폐사지(廢寺址) 등 역사적 가치가 높은 지역은 매장유산 유존지역에 해당한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal10')">②</span>
+                            지방자치단체의 장은 매장유산 유존지역의 적정성, 현재 지형 현황 등에 대한 의견을 국가유산청장에게 제출할 수 있다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal10')">③</span>
+                            문화체육관광부 장관은 매장유산 유존지역의 위치에 관한 정보를 상시적으로 공개할 때에는 축척 2만 5천분의 1의 지도에 표시해서 해야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal10')">④</span>
+                            매장유산 유존지역에 대한 추가 정보의 공개를 청구받은 국가유산청장은 그 청구일부터 7일 이내에 상세한 정보를 공개할 수 있다.
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal10" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal10')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행규칙 제2조 제1항 <br> (매장유산 유존지역의 정보 공개 등) ① 국가유산청장은 ... 매장유산이 존재하는 것으로 인정되는 지역(이하 “매장유산 유존지역”이라 한다)의 위치에 관한 정보를 영 제3조제2항에 따라 상시적으로 공개할 때에는 축척 2만 5천분의 1의 지도에 표시해서 해야 한다.
+                            </p>
+                            <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>11. 매장유산 보호 및 조사에 관한 법령상 매장유산 유존지역 보호 등에 해당하지 않는 것은? </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal11')">①</span>
+                            매장유산이 존재하는 것으로 인정되는 지역은 원형이 훼손되지 아니하도록 보호되어야 한다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal11')">②</span>
+                            누구든지 이 법에서 정하는 바에 따르지 아니하고는 매장유산 유존지역을 조사ㆍ발굴하여서는 아니 된다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal11')">③</span>
+                            국가와 지방자치단체 등 개발사업 시행자는 공사 중 매장유산을 발견한 때에는 즉시 해당 공사를 중지하여야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal11')">④</span> 
+                            「문화유산의 보존 및 활용에 관한 법률」에 따라 지정된 보호구역은 매장유산 유존지역으로 보호되어야 한다.     
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal11" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal11')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제3조 제1항 제6호 <br> 6. 「문화유산의 보존 및 활용에 관한 법률」 제2조제5항에 따른 보호구역 또는 「자연유산의 보존 및 활용에 관한 법률」 제2조제7호에 따른 보호구역에서 국가유산청장이 매장유산에 대하여 조사한 결과 매장유산이 존재하는 것으로 인정된 지역
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>12. 매장유산 보호 및 조사에 관한 법령상 매장유산 유존지역에 해당하지 않는 것은?  </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal12')">①</span>
+                            「국가유산영향진단법」에 따라 제출되어 국가유산청장이 검토결과를 통보한 진단보고서에 매장유산이 존재하는 것으로 표시된 지역
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal12')">②</span>
+                            「고도 보존 및 육성에 관한 특별법」에 따른 고도(古都)지역
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal12')">③</span>
+                            매장유산이 발견되어 그 발견된 사실이 국가유산청장에게 신고된 지역
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal12')">④</span>
+                            「문화유산의 보존 및 활용에 관한 법률」에 따른 임시지정문화유산이 있는 지역 
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal12" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal12')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제3조 제1항 제4호 <br> 4. 법 제17조에 따른 발견신고 및 확인절차를 거쳐서 매장유산이 존재하는 것으로 인정된 지역
+                            </p>
+                            <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>13. 매장유산 보호 및 조사에 관한 법령상 매장유산 유존지역에 관한 설명으로 옳지 않은 것은? </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal13')">①</span>
+                            국가유산청장은 매장유산 유존지역의 위치에 관한 정보를 전자적인 방법을 통하여 상시적으로 유지ㆍ관리해야 하며, 그 정보를 국가유산청의 인터넷 홈페이지 등에 공개해야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal13')">②</span>
+                            국가유산청장은 매장유산 유존지역의 위치에 관한 정보를 상시적으로 공개할 때에는 축척 2만 5천분의 1의 지도에 표시해서 해야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal13')">③</span>
+                            추가 정보의 공개를 청구받은 국가유산청장은 그 청구일부터 10일 이내에 상세한 정보의 공개 또는 처리 지연 사유를 통지하여야 한다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal13')">④</span>
+                            매장유산 유존지역의 위치에 관한 정보의 구체적 표시방법 및 추가 정보의 공개 등에 필요한 사항은 문화체육관광부령으로 정한다.
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal13" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal13')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행규칙 제2조 제3항  <br> ③ 제2항에 따라 정보의 공개를 청구받은 국가유산청장은 그 청구일부터 7일 이내에 상세한 정보를 공개할 수 있다. 이 경우 국가유산청장은 정보의 공개를 청구한 자와의 협의를 거쳐 정보의 구체적인 내용을 조정할 수 있다. 
+                            </p>
+                            <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>14. 매장유산 보호 및 조사에 관한 법령상 매장유산 유존지역에 관한 설명으로 옳지 않은 것은?  </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal14')">①</span>
+                            국가유산청장은 매장유산 유존지역의 위치에 관한 정보를 상시적으로 공개할 때에는 축척 2만 5천분의 1의 지도에 표시해서 해야 한다.    
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal14')">②</span>
+                            매장유산 유존지역에 대한 상세한 정보가 추가로 필요한 자는 국가유산청장에게 그 정보의 공개를 청구할 수 있다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal14')">③</span>
+                            추가 정보의 공개를 청구받은 국가유산청장은 그 청구일부터 7일 이내에 상세한 정보를 공개할 수 있다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal14')">④</span>
+                            이 경우 국가유산청장은 정보의 공개를 청구한 자와의 협의를 거쳐 정보의 구체적인 내용을 조정하여야 한다.   
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal14" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal14')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행규칙 제2조 제3항   <br> ③ 제2항에 따라 정보의 공개를 청구받은 국가유산청장은 그 청구일부터 7일 이내에 상세한 정보를 공개할 수 있다. 이 경우 국가유산청장은 정보의 공개를 청구한 자와의 협의를 거쳐 정보의 구체적인 내용을 조정할 수 있다.
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>15. 매장유산 보호 및 조사에 관한 법령상 “총칙” 내용으로 옳지 않은 것은?  
+                    </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal15')">①</span>
+                            국가와 지방자치단체 등 개발사업을 계획ㆍ시행하고자 하는 자는 매장유산이 훼손되지 아니하도록 하여야 한다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal15')">②</span>
+                            개발사업 시행자는 공사 중 매장유산을 발견한 때에는 그 현상을 변경하지 말고 즉시 그 발견된 사실을 국가유산청장에게 신고하여야 한다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal15')">③</span>
+                            국가유산청장은 매장유산 유존지역의 위치에 관한 정보를 전자적인 방법을 통하여 상시적으로 유지ㆍ관리하여야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal15')">④</span>
+                            개발계획 또는 건설공사의 시행으로 인한 매장유산의 보호에 관하여는 「국가유산영향진단법」을 우선 적용한다. 
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal15" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal15')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 제5조 제2항 <br> ② 제1항의 개발사업 시행자는 공사 중 매장유산을 발견한 때에는 즉시 해당 공사를 중지하여야 한다. 
+                            </p>
+                            <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>16. 매장유산 보호 및 조사에 관한 법령상 매장유산 지표조사에 관한 설명으로 옳지 않은 것은?  </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal16')">①</span>
+                            국가 또는 지방자치단체(이하 “국가등”이라 한다)는 국가유산이 매장ㆍ분포되어 있는지를 확인하기 위하여 매장유산 지표조사를 할 수 있다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal16')">②</span>
+                            중앙행정기관의 장이나 지방자치단체의 장은 국가등지표조사를 실시하려는 때에는 미리 국가유산청장의 허가를 받아야 한다.  
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal16')">③</span>
+                            지방자치단체의 장은 관할 지역이 아닌 지역을 포함하여 국가등지표조사를 실시하려는 경우에는 해당 지역을 관할하는 지방자치단체의 장과 사전에 협의를 해야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal16')">④</span> 
+                            이 법이 규정한 사항 외에 국가등지표조사의 방법 및 절차 등에 관하여 필요한 사항은 국가유산청장이 정하여 고시한다.     
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal16" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal16')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제5조의2 제1항 <br> (국가등지표조사의 방법 및 절차) ① 중앙행정기관의 장이나 지방자치단체의 장은 국가등지표조사를 실시하려는 때에는 미리 국가유산청장에게 알려야 한다.
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>17. 매장유산 보호 및 조사에 관한 법령상 매장유산 지표조사에 관한 설명으로 옳지 않은 것은?  
+                    </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal17')">①</span>
+                            지방자치단체는 국가유산이 매장ㆍ분포되어 있는지를 확인하기 위하여 매장유산 지표조사를 할 수 있다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal17')">②</span>
+                            국가 등에 의한 매장유산 지표조사는 이 법에 따른 매장유산 조사기관이 수행한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal17')">③</span>
+                            지방자치단체의 장은 국가등지표조사를 실시하려는 때에는 미리 국가유산청장에게 알려야 한다.  
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal17')">④</span>
+                            매장유산을 훼손할 우려가 커서 부득이 매장유산을 발굴할 필요가 있는 경우 그 공사의 시행자는 공사 시행 전 지표조사를 하여야 한다.
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal17" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal17')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제8조 제2항 <br> ② 매장유산을 훼손할 우려가 커서 부득이 매장유산을 발굴할 필요가 있는 경우 그 공사의 시행자는 법 제11조제1항제3호에 따라 국가유산청장의 발굴허가를 받아야 한다. 
+                            </p>
+                            <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>               
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>18. 매장유산 보호 및 조사에 관한 법령상 국가등에 의한 지표조사에 관한 설명으로 옳은 것은?  
+                    </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal18')">①</span>
+                            건설공사 시행자는 국가유산이 매장ㆍ분포되어 있는지를 확인하기 위하여 매장유산 지표조사를 할 수 있다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal18')">②</span>
+                            지표조사를 실시한 지방자치단체의 장은 조사를 마친 날부터 60일 이내에 지표조사 결과 보고서를 국가유산청장에게 제출해야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal18')">③</span>
+                            지표조사 보고서에는 조사지역의 고건축물(근대건축물은 제외한다)에 대한 현장조사 내용이 포함되어야 한다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal18')">④</span>
+                            국가유산청장은 해당 결과 보고서를 공개하려면 국가등지표조사를 실시한 중앙행정기관의 장이나 지방자치단체의 장의 동의가 있어야 한다.
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal18" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal18')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제5조의2 제5항  <br> ⑤ 국가유산청장은 국가등지표조사를 실시한 중앙행정기관의 장이나 지방자치단체의 장의 동의가 있으면 지표조사 결과 보고서를 공개할 수 있다.
+                            </p>
+                            <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>19. 매장유산 보호 및 조사에 관한 법령상 매장유산 지표조사 등에 관한 설명으로 옳지 않은 것은?   
+                    </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal19')">①</span>
+                            국가 또는 지방자치단체는 국가유산이 매장ㆍ분포되어 있는지를 확인하기 위하여 매장유산 지표조사를 할 수 있다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal19')">②</span>
+                            국가등지표조사를 실시한 중앙행정기관의 장이나 지방자치단체의 장은 조사를 마친 날부터 20일 이내에 지표조사 보고서를 국가유산청장에게 제출해야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal19')">③</span>
+                            국가유산청장은 지표조사 보고서가 적절하게 작성되었는지 검토하기 위하여 매장유산 관련 전문가의 의견을 듣거나 현장조사를 실시하여야 한다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal19')">④</span>
+                            지표조사 결과 매장유산의 존재가 확인된 경우 국가유산청장과 관할 지방자치단체의 장은 해당 지역을 매장유산 유존지역으로서 보호하여야 한다.
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal19" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal19')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제5조의4 제1항  <br> (지표조사 보고서의 검토 등) ① 국가유산청장은 법 제9조제1항에 따라 지표조사 보고서가 적절하게 작성되었는지 검토하기 위하여 매장유산 관련 전문가의 의견을 듣거나 현장조사를 실시할 수 있다. 
+                            </p>
+                            <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- ✅ 2유형: 빈칸 또는 괄호 채워넣기형 문제 템플릿 -->
+                <div class="question">
+                    <p>20. 매장문화재 보호 및 조사에 관한 법령상 지표조사 보고서에 포함되어야 할 사항을 모두 고른 것은? </p>
+                    <!-- 보기 박스 -->
+                    <div class="example-box"
+                        style="margin-top: 10px; margin-bottom: 30px; padding: 10px; padding-left: 30px; background-color: #f4f4f4; border-radius: 5px; text-align: justify;">
+                        <p>ㄱ. 조사지역의 역사, 고고(考古), 민속에 대한 문헌조사 내용</p>
+                        <p>ㄴ. 조사지역의 유물ㆍ유구 산포지(散布地), 민속, 고건축물(근대건축물을 포함한다)에 대한 현장조사 내용 </p>
+                        <p>ㄷ. 조사지역의 지질 및 자연 환경에 대한 문헌조사 및 현장조사 내용 </p>
+                        <p>ㄹ. 조사를 수행한 이 법에 따른 매장유산 조사기관의 의견</p>                        
+                    </div>
+                    <div class="choices choices-horizontal" style="margin-top: 50px;">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal20')">①</span>
+                            ㄱ, ㄴ
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal20')">②</span>
+                            ㄱ, ㄴ, ㄹ
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button" onclick="handleChoiceClick(this, false, 'answerModal20')">③</span>
+                            ㄱ, ㄷ, ㄹ
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal20')">④</span>
+                            ㄱ, ㄴ, ㄷ, ㄹ
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal20" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal20')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제5조의3 제2항 <br> ② 제1항에 따른 지표조사 보고서에는 다음 각 호의 사항이 포함되어야 한다.
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>21. 매장유산 보호 및 조사에 관한 법령상 지표조사 보고서의 검토 등에 관한 설명으로 옳은 것은? </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal21')">①</span>
+                            국가등 지표조사 보고서를 제출받은 국가유산청장은 해당 보고서가 적절하게 작성되었는지 검토할 수 있다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal21')">②</span>
+                            국가유산청장은 지표조사 보고서가 적절하게 작성되었는지 검토하기 위하여 현장조사를 실시하여야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal21')">③</span>
+                            국가유산청장은 지표조사 보고서를 제출받은 날부터 20일 이내에 해당 보고서에 대한 검토 결과를 관할 지방자치단체의 장에게 통보해야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal21')">④</span> 
+                            지표조사 결과 매장유산의 존재가 확인된 경우 국가유산청장과 관할 지방자치단체의 장은 해당 지표조사 대상 지역이 매장유산 유존지역이 된 사실을 국가유산청 및 해당 지방자치단체의 인터넷 홈페이지에 각각 공고한다.     
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal21" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal21')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제7조  <br> (매장유산 유존지역의 보호) 법 제9조제2항에 따른 지표조사 결과 매장유산의 존재가 확인된 경우 국가유산청장과 관할 지방자치단체의 장은 해당 지표조사 대상 지역이 매장유산 유존지역이 된 사실을 국가유산청 및 해당 지방자치단체의 인터넷 홈페이지에 각각 공고한다.
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>                
+                <!-- ✅ 1유형: 빈칸 또는 괄호 채워넣기형 문제 템플릿 -->
+                <div class="question">
+                    <p>22. 매장유산 보호 및 조사에 관한 법령상 매장유산 유존지역의 보호에 관한 규정이다. 빈칸에 알맞은 것은? </p>
+                    <!-- 보기 박스 -->
+                    <div class="example-box"
+                        style="margin-top: 10px; margin-bottom: 30px; padding: 10px; padding-left: 30px; background-color: #f4f4f4; border-radius: 5px; text-align: justify;">
+                        <p>o. 국가등지표조사를 실시한 중앙행정기관의 장이나 지방자치단체의 장은 조사를 마친 날부터 <span>( ㄱ )</span>일 이내에 지표조사 보고서를 국가유산청장에게 제출해야 한다. </p>
+                        <p>o. 국가유산청장은 지표조사 보고서가 적절하게 작성되었는지 검토하기 위하여 필요한 경우에는 해당 지표조사 대상 지역을 관할하는 지방자치단체의 장에게 지표조사 보고서에 대한 의견 제출을 요청할 수 있다. 이 경우 해당 지방자치단체의 장은 요청을 받은 날부터 <span>( ㄴ )</span>일 이내에 국가유산청장에게 의견을 제출해야 한다. </p>
+                        <p>o. 국가유산청장은 지표조사 보고서를 제출받은 날부터 <span>( ㄷ )</span>일 이내에 해당 지표조사 보고서에 대한 검토 결과를 해당 지표조사 보고서를 제출한 기관과 관할 지방자치단체의 장에게 통보해야 한다. </p>
+                    </div>
+                    <div class="choices" style="margin-top: 50px;">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal22')">①</span>
+                            ㄱ: 20,  ㄴ: 7,   ㄷ: 30   
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal22')">②</span>
+                            ㄱ: 20,  ㄴ: 10,  ㄷ: 30  
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal22')">③</span>
+                            ㄱ: 30,  ㄴ: 7,   ㄷ: 20  
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal22')">④</span>
+                            ㄱ: 30,  ㄴ: 10,  ㄷ: 20   
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal22" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal22')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제5조의3 제1항, 제5조의4 제2항, 제3항 <br> 법조문 참조 
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>23. 매장유산 보호 및 조사에 관한 법령상 지표조사 보고서에 관한 설명으로 옳은 것은?  
+                    </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal23')">①</span>
+                            건설공사 시행자는 매장유산 지표조사를 할 수 있다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal23')">②</span>
+                            지표조사를 실시한 중앙행정기관의 장은 조사를 마친 날부터 20일 이내에 지표조사 결과 보고서를 국가유산청장에게 제출해야 한다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal23')">③</span>
+                            국가유산청장은 국가유산위원회의 의견을 들어 해당 지표조사 보고서가 적절하게 작성되었는지 검토하여야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal23')">④</span>
+                            지표조사 결과 매장유산의 존재가 확인된 경우 국가유산청장과 관할 지방자치단체의 장은 해당 지역을 매장유산 유존지역으로서 보호할 수 있다.
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal23" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal23')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제5조의2 제3항  <br> ③ 국가등지표조사를 실시한 중앙행정기관의 장이나 지방자치단체의 장은 조사를 마친 날부터 20일 이내에 지표조사 결과 보고서를 국가유산청장에게 제출해야 한다.  
+                            </p>
+                            <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>24. 매장유산 보호 및 조사에 관한 법령상 국가유산청장은 지표조사 보고서가 적절하게 작성되었는지 검토하기 위하여 매장유산 관련 전문가의 의견을 들을 수 있다. 매장유산 관련 전문가에 관한 내용으로 옳지 않은 것은? </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal24')">①</span>
+                            매장유산 관련 전문가(이하 '전문가'라 한다)는 매장유산의 발굴 및 조사 등과 관련된 학위를 취득한 사람이다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal24')">②</span>
+                            이 법에 따른 조사기관에서 조사단장, 책임조사원 또는 조사원으로 재직 중인 사람은 해당 전문가에 포함된다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal24')">③</span>
+                            「박물관 및 미술관 진흥법」에 따른 국립 박물관 또는 공립 박물관의 장은 전문가에 해당한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal24')">④</span>
+                            「국가유산기본법」에 따른 유산위원회 위원 또는 전문위원은 해당 전문가이다. 
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal24" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal24')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제5조의4 제1항 제3호  <br> 3. 다음 각 목의 기관에 재직 중인 학예연구관 또는 학예연구사
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>25. 매장유산 보호 및 조사에 관한 법령상 매장유산의 발굴허가 등에 관한 설명으로 옳지 않은 것은?  
+                    </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal25')">①</span>
+                            매장유산 유존지역은 발굴할 수 없다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal25')">②</span>
+                            멸실ㆍ훼손 등의 우려가 있는 유적을 긴급하게 발굴할 필요가 있는 경우에도 국가유산청장의 허가를 받아야 발굴할 수 있다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal25')">③</span>
+                            지방자치단체가 시행하는 건설공사로 인한 발굴에 사용되는 경비는 예산의 범위에서 국가가 지원할 수 있다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal25')">④</span>
+                            발굴조사의 방법 및 절차 등에 관하여 필요한 사항은 국가유산청장이 정하여 고시한다. 
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal25" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal25')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 제11조 제3항 <br> ③ 매장유산 유존지역을 발굴하는 경우 그 경비는 제1항제1호ㆍ제2호 및 제4호의 경우에는 해당 국가유산의 발굴을 허가받은 자가, 같은 항 제3호의 경우에는 해당 공사의 시행자가 부담한다. 다만, 대통령령으로 정하는 건설공사로 인한 발굴에 사용되는 경비는 예산의 범위에서 국가나 지방자치단체가 지원할 수 있다. 
+                            </p>
+                            <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- ✅ 2유형: 빈칸 또는 괄호 채워넣기형 문제 템플릿 -->
+                <div class="question">
+                    <p>26. 매장유산 보호 및 조사에 관한 법령상 국가유산청장이 발굴허가 여부를 결정하기 위하여 반드시 국가유산위원회의 심의를 거쳐야 하는 대상에 해당하는 것을 모두 고른 것은? </p>
+                    <!-- 보기 박스 -->
+                    <div class="example-box"
+                        style="margin-top: 10px; margin-bottom: 30px; padding: 10px; padding-left: 30px; background-color: #f4f4f4; border-radius: 5px; text-align: justify;">
+                        <p>ㄱ.「고도 보존 및 육성에 관한 특별법」에 따라 지정된 역사문화환경 보존육성지구 및 역사문화환경 특별보존지구에서 시행되는 건설공사</p>
+                        <p>ㄴ. 조사기관과 발굴허가를 받으려는 자 사이에 출자 등의 관계가 있어서 업무 처리 공정성의 침해가 우려되는 사업</p>
+                        <p>ㄷ. 발굴기간이 200일 이상인 사업</p>
+                        <p>ㄹ. 발굴기간, 발굴비용 및 발굴에 참여하는 인력이 이 법에 따라 국가유산청장이 정한 용역 대가의 기준에 현저히 맞지 아니하여 매장유산 발굴조사가 부실하게 될 우려가 있는 경우</p>
+                    </div>
+                    <div class="choices choices-horizontal" style="margin-top: 50px;">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal26')">①</span>
+                            ㄱ, ㄹ
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal26')">②</span>
+                            ㄱ, ㄴ, ㄷ
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal26')">③</span>
+                            ㄴ, ㄷ, ㄹ
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button" onclick="handleChoiceClick(this, true, 'answerModal26')">④</span>
+                            ㄱ, ㄴ, ㄷ, ㄹ
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal26" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal26')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제8조 제1항 <br> (발굴허가 방법 등) ① 국가유산청장은 법 제11조제1항 각 호에 따른 사업으로서 다음 각 호의 어느 하나에 해당하는 사업에 대해서는 문화유산위원회 또는 자연유산위원회의 심의를 거친 후에 발굴허가 여부를 결정하여야 한다. 
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>27. 매장유산 보호 및 조사에 관한 법령상 매장유산 발굴에 관한 설명으로 옳은 것은? (기출) </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal27')">①</span>
+                            발굴허가신청서를 제출받은 지방자치단체의 장은 7일 이내에 발굴의 필요 여부 및 범위, 현장 여건에 적합한 보존방안 등에 관하여 국가유산청장에게 의견을 제출할 수 있다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal27')">②</span>
+                            국가유산청장은 발굴기간이 100일 이상인 사업에 대하여는 국가유산위원회의 심의를 거친 후에 발굴허가 여부를 결정하여야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button" onclick="handleChoiceClick(this, true, 'answerModal27')">③</span>
+                            유적(遺蹟)의 정비사업을 목적으로 매장유산 유존지역을 발굴하는 경우에는 해당 국가유산의 발굴을 허가받은 자가 그 경비를 부담한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal27')">④</span> 
+                            국가유산청장은 발굴된 유적의 성격을 규명하는 데에 장기간 연구가 필요하거나 출토된 유물을 보존 처리하는 등 정당한 사유가 있다고 인정되는 경우에는 1년의 범위에서 발굴조사보고서의 제출기한을 연장할 수 있다.    
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal27" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal27')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 제11조 제3항 <br> ③ 매장유산 유존지역을 발굴하는 경우 그 경비는 제1항제1호ㆍ제2호 및 제4호의 경우에는 해당 국가유산의 발굴을 허가받은 자가, 같은 항 제3호의 경우에는 해당 공사의 시행자가 부담한다.
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>              
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>28. 매장유산 보호 및 조사에 관한 법령상 매장유산의 발굴허가 등에 관한 설명으로 옳지 않는 것은?  
+                    </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal28')">①</span>
+                            발굴이 유적(遺蹟)의 정비사업을 목적으로 하는 경우라도 국가유산청장의 허가를 받아야 한다.  
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button" onclick="handleChoiceClick(this, true, 'answerModal28')">②</span>
+                            발굴기간이 100일 이상인 경우에는 국가유산위원회의 심의를 거쳐야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal28')">③</span>
+                            국가유산청장은 학술적으로 중요한 유물ㆍ유구가 출토되는 경우 기간을 명시하여 발굴의 정지나 중지를 명할 수 있다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal28')">④</span>
+                            국가유산청장은 발굴허가를 받은 건설공사의 시행자가 그 허가 내용 및 지시사항을 위반한 경우 그 허가를 취소할 수 있다. 
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal28" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal28')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제8조 제1항 제3호 <br> ① 국가유산청장은 법 제11조제1항 각 호에 따른 사업으로서 다음 각 호의 어느 하나에 해당하는 사업에 대해서는 국가유산위원회의 심의를 거친 후에 발굴허가 여부를 결정하여야 한다. 
+                            </p>
+                            <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <div class="question">
+                    <p>29. 매장유산 보호 및 조사에 관한 법령상 매장유산의 발굴허가의 취소 등에 관한 설명으로 옳지 않는 것은?  </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button" onclick="handleChoiceClick(this, false, 'answerModal29')">①</span>
+                            국가유산청장은 발굴허가를 한 경우에도 발굴의 정지 또는 중지를 명하거나 그 허가를 취소할 수 있다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal29')">②</span>
+                            국가유산청장은 학술적으로 중요한 유물ㆍ유구가 출토되는 경우 기간을 명시하여 발굴의 정지나 중지를 명할 수 있다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal29')">③</span>
+                            국가유산청장은 조사기관에서 발굴조사단의 구성 인력을 발굴조사의 진행 중에 변경하거나 축소하는 경우 그 허가를 취소하여야 한다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal29')">④</span>
+                            멸실ㆍ훼손 등의 우려가 있는 유적을 긴급하게 발굴할 필요가 있는 경우에도 국가유산청장의 허가를 받아야 한다.  
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal29" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal29')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제9조 제4항 제2호  <br> ④ 국가유산청장은 매장유산의 발굴을 계속할 수 없는 다음 각 호의 사유가 발생한 경우에는 법 제11조제2항에 따라 기간을 명시하여 발굴의 정지나 중지를 명할 수 있다. <br>
+                            2. 조사기관에서 발굴조사단의 구성 인력을 발굴조사의 진행 중에 변경하거나 축소하는 경우
+                            </p> <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역 -->
+                <div class="question">
+                    <p>30. 매장유산 보호 및 조사에 관한 법령상 매장유산 발굴 등에 관한 설명으로 옳지 않은 것은? 
+                    </p>
+                    <div class="choices">
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, true, 'answerModal30')">①</span>
+                            매장유산의 발굴허가를 받으려는 자는 발굴허가 신청서와 구비서류를 해당 사업지역을 관할하는 지방자치단체의 장을 거쳐 국가유산청장에게 제출하여야 한다. 
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal30')">②</span>
+                            국가유산청장은 발굴허가 신청서 중 등록이 취소되거나 업무가 정지된 조사기관 및 이와 직접 관련된 대표자, 조사단장 또는 책임조사원이 포함된 경우에는 발굴허가를 제한할 수 있다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button" onclick="handleChoiceClick(this, false, 'answerModal30')">③</span>
+                            발굴허가 신청서 중 고의나 중과실로 발굴조사 보고서를 사실과 다르게 작성하여 그 등록이 취소된 조사기관이 포함된 경우 허가제한기간은 2년이다.
+                        </div>
+                        <div class="choice">
+                            <span class="choice-button"
+                                onclick="handleChoiceClick(this, false, 'answerModal30')">④</span>
+                            국가 또는 지방자치단체가 발굴경비를 지원하는 건설공사 중 「지방공기업법」에 따른 지방공기업이 시행하는 건설공사는 지원 대상에서 제외된다.
+                        </div>
+                    </div>
+                </div>
+                <!-- 문제 영역이 끝나는 부분 아래에 배치 -->
+                <div id="answerModal30" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span id="answerText">정답입니다!</span> <!-- 좌측 정답 여부 표시 -->
+                            <button class="confirm-button" onclick="closeModal('answerModal30')">확인</button>
+                            <!-- 우측 끝 확인 버튼 -->
+                        </div>
+                        <!-- 하단 텍스트 영역을 아래에 배치 -->
+                        <div class="modal-body">
+                            <p id="lawText">법조문 ; 매장유산 보호 및 조사에 관한 법률 시행령 제12조 제1항 <br> ① 제11조에 따라 매장유산의 발굴허가를 받으려는 자는 제24조에 따른 매장유산 조사기관으로서 직접 발굴할 기관과 그 대표자, 조사단장 및 책임조사원 등을 적은 발굴허가 신청서와 구비서류를 해당 사업지역을 관할하는 지방자치단체의 장과 국가유산청장에게 제출하여야 한다.
+                            </p>
+                            <!-- 법조문 표시 -->
+                        </div>
+                    </div>
+                </div>              
+            </div>
+        </div>
+
+        <!-- 좌우 이동 버튼 -->
+        <div style="display: flex; justify-content: space-between; margin-top: 40px;">
+            <button onclick="goToPrev()" style="
+                width: 80px;
+                height: 35px;
+                font-size: 15px;
+                padding: 6px 10px;
+                background-color: #e8e7e7;
+                border: 1px solid #e8e7e7; /* 배경색과 동일하게 */
+                border-radius: 6px;">
+                ← 처음
+            </button>
+            <button onclick="goToNext()" style="
+                width: 80px;
+                height: 35px;
+                font-size: 15px;
+                padding: 6px 10px;
+                background-color: #e8e7e7;
+                border: 1px solid #e8e7e7;
+                border-radius: 6px;">
+                매장2 →
+            </button>
+        </div>
+        <!-- ✅ 저작권 문구 -->
+        <div style="text-align: center; margin-top: 30px;">
+            <p style="font-size: 13px; color: #999;">
+                ※ 이 모의고사 문제는 저작권 보호를 받으며, 무단 복제·배포·인용을 금합니다.
+            </p>
+        </div>
+    </div>
+    <script>
+        function goToPrev() {
+            // 이전 페이지 링크로 이동
+            window.location.href = "https://contents.premium.naver.com/2026/2024mocktest/contents/261101123415755zd";  // ← 원하는 URL로 교체
+        }
+
+        function goToNext() {
+            // 처음 페이지 링크로 이동
+            window.location.href = "mae2.html";  // ← 원하는 URL로 교체
+        }
+    </script>
+
+</body>
+
+</html>
